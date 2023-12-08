@@ -60,7 +60,7 @@ def main():
 
 
     # Delete unnecessary columns
-    studentDF = studentDF.drop(["School", "Sex", "Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "Reason", "Guardian", "Traveltime", "Failures", "Schoolsup", "Famsup", "Paid", "Activities", "Nursery", "Higher", "Internet", "Romantic", "Freetime", "Goout", "Walc"], axis=1)
+    studentDF = studentDF.drop(["School", "Sex", "Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "Reason", "Guardian", "Traveltime", "Failures", "Schoolsup", "Famsup", "Paid", "Activities", "Nursery", "Higher", "Internet", "Romantic", "Goout", "Walc"], axis=1)
 
 
 
@@ -68,30 +68,43 @@ def main():
     # Graph a relation with the age to avg of G1, G2, G3
     # # Convert the data to numeric
     studentDF["Age"] = pd.to_numeric(studentDF["Age"])
+    studentDF["Health"] = pd.to_numeric(studentDF["Health"])
+
 
     # Organize the data "Health" from least to greatest
-    studentDF = studentDF.sort_values(by="Health")
+    studentDF = studentDF.sort_values(by="Health") # THis does not work
 
-    #Print avg of each health group
-    print(studentDF.groupby("Health")["G1"].mean())
+
 
     # Make the data frame add the avg of G1, G2, G3
     studentDF["G1"] = studentDF["G1"].astype(float)
     studentDF["G2"] = studentDF["G2"].astype(float)
     studentDF["G3"] = studentDF["G3"].astype(float)
     studentDF["Avg"] = studentDF[["G1", "G2", "G3"]].mean(axis=1)
-    # matplotlib.use('Agg')
-    #
-    # # For each x value, find the mean of the y values and plot it
-    # fig = studentDF.groupby("Health")["Avg"].mean().plot(x="Health", y="Avg", kind="bar", title="Health vs Avg").get_figure()
-    # # Plot the data with each health group "1-5" being avg of the avg of G1, G2, G3
-    #
-    #
-    #
-    #
-    #
-    # # Save the plot
-    # fig.savefig("healthVSavg.png")
+
+    # Print the mean of the Health for each number ("1", "2", "3", etc)
+
+    print(studentDF.groupby("Health")["Avg"].mean())
+
+    matplotlib.use('Agg')
+    #What are the types of graphs that can be used?
+    # Scatter plot
+    # Bar graph
+    # Pie chart
+    # Histogram
+    # Box plot
+    # Area plot
+    # Scatter plot
+
+    # For each x value, find the mean of the y values and plot it
+    #fig = studentDF.groupby("Health")["Avg"].mean().plot(x="Health", y="Avg", kind="line", title="Health vs Avg").get_figure()
+
+
+    fig = studentDF.plot(x="Health", y="Avg", kind="scatter", title="Health vs Avg").get_figure()
+
+
+    # Save the plot
+    fig.savefig("healthVSavg-scatter.png")
 
 
 
