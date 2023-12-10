@@ -12,7 +12,7 @@ from scipy import stats
 def readFile():
     try:
         # Open the file
-        file = open("student-data.csv", "r")
+        file = open("file.txt", "r")
         # Read the file
         fileContents = file.readlines()
         # Close the file
@@ -56,15 +56,15 @@ def chisquaredHealth(studentDF):
     num=stats.chi2_contingency(crosstab)
     return num
 def chisquaredAbsenses(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['absences'])
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Absences'])
     num=stats.chi2_contingency(crosstab)
     return num
 def chisquaredStudy(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['studytime'])
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Studytime'])
     num=stats.chi2_contingency(crosstab)
     return num
 def chisquaredFamrel(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['famrel'])
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Famrel'])
     num=stats.chi2_contingency(crosstab)
     return num
 def chisquaredAlc(studentDF):
@@ -72,7 +72,7 @@ def chisquaredAlc(studentDF):
     num=stats.chi2_contingency(crosstab)
     return num
 def chisquaredFree(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['freetime'])
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Freetime'])
     num=stats.chi2_contingency(crosstab)
     return num
 # main function
@@ -121,12 +121,12 @@ def main():
     print(health)
 
     # calculating health x^2
-    absenses = chisquaredHealth(studentDF)
+    absenses = chisquaredAbsenses(studentDF)
     print("absenses\n")
     print(absenses)
 
     # calculating study time x^2
-    study = chisquaredHealth(studentDF)
+    study = chisquaredFamrel(studentDF)
     print("study\n")
     print(study)
 
@@ -136,12 +136,12 @@ def main():
     print(famrel)
 
     # calculating daily alcohol consumption x^2
-    dalc = chisquaredHealth(studentDF)
+    dalc = chisquaredAlc(studentDF)
     print("dalc\n")
     print(dalc)
 
     # calculating free time x^2
-    free = chisquaredHealth(studentDF)
+    free = chisquaredFree(studentDF)
     print("free\n")
     print(free)
 
