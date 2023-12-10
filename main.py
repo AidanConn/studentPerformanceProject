@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib
+from scipy import stats
 
 
 
@@ -21,6 +22,7 @@ def readFile():
     except:
         print("Error reading the file")
         exit()
+
 
 
 def fileToList(data):
@@ -48,6 +50,31 @@ def fileToList(data):
 
 # create a chart
 
+# create a fucntion that calcualtes the chi squared statistic for each of the outside factors
+def chisquaredHealth(studentDF):
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Health'])
+    num=stats.chi2_contingency(crosstab)
+    return num
+def chisquaredAbsenses(studentDF):
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['absences'])
+    num=stats.chi2_contingency(crosstab)
+    return num
+def chisquaredStudy(studentDF):
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['studytime'])
+    num=stats.chi2_contingency(crosstab)
+    return num
+def chisquaredFamrel(studentDF):
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['famrel'])
+    num=stats.chi2_contingency(crosstab)
+    return num
+def chisquaredAlc(studentDF):
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Dalc'])
+    num=stats.chi2_contingency(crosstab)
+    return num
+def chisquaredFree(studentDF):
+    crosstab=pd.crosstab(studentDF['Avg'],studentDF['freetime'])
+    num=stats.chi2_contingency(crosstab)
+    return num
 # main function
 def main():
     # Read the file
@@ -87,6 +114,37 @@ def main():
     print(studentDF.groupby("Health")["Avg"].mean())
 
     matplotlib.use('Agg')
+    #calculate chi squared test statistics
+    # calculating health x^2
+    health = chisquaredHealth(studentDF)
+    print("health\n")
+    print(health)
+
+    # calculating health x^2
+    absenses = chisquaredHealth(studentDF)
+    print("absenses\n")
+    print(absenses)
+
+    # calculating study time x^2
+    study = chisquaredHealth(studentDF)
+    print("study\n")
+    print(study)
+
+    # calculating family relations x^2
+    famrel = chisquaredHealth(studentDF)
+    print("famrel\n")
+    print(famrel)
+
+    # calculating daily alcohol consumption x^2
+    dalc = chisquaredHealth(studentDF)
+    print("dalc\n")
+    print(dalc)
+
+    # calculating free time x^2
+    free = chisquaredHealth(studentDF)
+    print("free\n")
+    print(free)
+
     #What are the types of graphs that can be used?
     # Scatter plot
     # Bar graph
@@ -100,18 +158,11 @@ def main():
     #fig = studentDF.groupby("Health")["Avg"].mean().plot(x="Health", y="Avg", kind="line", title="Health vs Avg").get_figure()
 
 
-    fig = studentDF.plot(x="Health", y="Avg", kind="scatter", title="Health vs Avg").get_figure()
+    #fig = studentDF.plot(x="Health", y="Avg", kind="scatter", title="Health vs Avg").get_figure()
 
 
     # Save the plot
-    fig.savefig("healthVSavg-scatter.png")
+    #fig.savefig("healthVSavg-scatter.png")
 
-
-
-
-
-
-
-
-# Call the main functiasdasda
 main()
+
