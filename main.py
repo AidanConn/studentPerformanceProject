@@ -126,12 +126,12 @@ def main():
     print(absenses)
 
     # calculating study time x^2
-    study = chisquaredFamrel(studentDF)
+    study = chisquaredStudy(studentDF)
     print("study\n")
     print(study)
 
     # calculating family relations x^2
-    famrel = chisquaredHealth(studentDF)
+    famrel = chisquaredFamRel(studentDF)
     print("famrel\n")
     print(famrel)
 
