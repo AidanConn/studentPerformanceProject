@@ -131,7 +131,7 @@ def main():
     print(study)
 
     # calculating family relations x^2
-    famrel = chisquaredFamRel(studentDF)
+    famrel = chisquaredFamrel(studentDF)
     print("famrel\n")
     print(famrel)
 
