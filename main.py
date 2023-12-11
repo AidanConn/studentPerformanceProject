@@ -1,11 +1,13 @@
-# Code here :)
+# Name: Aidan Connaughton ; Maria Mangiameli
+# Course: COMSC.230.01
+# Prof. Name: Dr. Omar X. Rivera Morales
+# Assignment: Final Project
+# Program Name: main.py
+# Program brief description: This program will read in data from a file and create graphs and chi squared test statistics
 
 import pandas as pd
-import numpy as np
 import matplotlib
 from scipy import stats
-
-
 
 
 # read in data
@@ -24,7 +26,6 @@ def readFile():
         exit()
 
 
-
 def fileToList(data):
     # Create a list to store the data
     cryptoData = []
@@ -37,44 +38,76 @@ def fileToList(data):
         line[-2] = line[-2].strip('"')
         line[-3] = line[-3].strip('"')
 
-
-
-
-
         # Store the data in a list
         cryptoData.append(line)
     return cryptoData
 
 
-# use pandas to organize data set
-
-# create a chart
-
 # create a fucntion that calcualtes the chi squared statistic for each of the outside factors
 def chisquaredHealth(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Health'])
-    num=stats.chi2_contingency(crosstab)
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Health'])
+    num = stats.chi2_contingency(crosstab)
     return num
+
+
 def chisquaredAbsenses(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Absences'])
-    num=stats.chi2_contingency(crosstab)
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Absences'])
+    num = stats.chi2_contingency(crosstab)
     return num
+
+
 def chisquaredStudy(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Studytime'])
-    num=stats.chi2_contingency(crosstab)
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Studytime'])
+    num = stats.chi2_contingency(crosstab)
     return num
+
+
 def chisquaredFamrel(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Famrel'])
-    num=stats.chi2_contingency(crosstab)
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Famrel'])
+    num = stats.chi2_contingency(crosstab)
     return num
+
+
 def chisquaredAlc(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Dalc'])
-    num=stats.chi2_contingency(crosstab)
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Dalc'])
+    num = stats.chi2_contingency(crosstab)
     return num
+
+
 def chisquaredFree(studentDF):
-    crosstab=pd.crosstab(studentDF['Avg'],studentDF['Freetime'])
-    num=stats.chi2_contingency(crosstab)
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Freetime'])
+    num = stats.chi2_contingency(crosstab)
     return num
+
+
+# Create a function that creates graphs that is passed through the data frame and what you want to graph ex: "Age", "Health", "etc"
+def createGraphs(studentDF, x):
+    # Organize the data "x" from least to greatest
+    studentDF = studentDF.sort_values(by=x)
+
+    x_lower = x.lower()
+
+    # Line graph
+    fig = studentDF.groupby(x)["Avg"].mean().plot(x=x, y="Avg", kind="line", title=x + " vs Avg").get_figure()
+
+    # Save the plot
+    fig.savefig(x_lower + "VSavg-line.png")
+
+    fig.clf()  # clear the figure
+
+    # Scatter plot
+    fig = studentDF.plot(x=x, y="Avg", kind="scatter", title=x + " vs Avg").get_figure()
+
+    # Save the plot
+    fig.savefig(x_lower + "VSavg-scatter.png")
+
+    fig.clf()  # clear the figure
+
+    print("Created graphs for " + x)
+
+    return
+
+
 # main function
 def main():
     # Read the file
@@ -83,25 +116,28 @@ def main():
     studentData = fileToList(fileContent)
 
     # Create a dataframe
-    studentDF = pd.DataFrame(studentData, columns=["School","Sex","Age","Address","Famsize","Pstatus","Medu","Fedu","Mjob","Fjob","Reason","Guardian","Traveltime","Studytime","Failures","Schoolsup","Famsup","Paid","Activities","Nursery","Higher","Internet","Romantic","Famrel","Freetime","Goout","Dalc","Walc","Health","Absences","G1","G2","G3"])
-
+    studentDF = pd.DataFrame(studentData,
+                             columns=["School", "Sex", "Age", "Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob",
+                                      "Fjob", "Reason", "Guardian", "Traveltime", "Studytime", "Failures", "Schoolsup",
+                                      "Famsup", "Paid", "Activities", "Nursery", "Higher", "Internet", "Romantic",
+                                      "Famrel", "Freetime", "Goout", "Dalc", "Walc", "Health", "Absences", "G1", "G2",
+                                      "G3"])
 
     # Delete unnecessary columns
-    studentDF = studentDF.drop(["School", "Sex", "Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "Reason", "Guardian", "Traveltime", "Failures", "Schoolsup", "Famsup", "Paid", "Activities", "Nursery", "Higher", "Internet", "Romantic", "Goout", "Walc"], axis=1)
-
-
-
+    studentDF = studentDF.drop(
+        ["School", "Sex", "Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "Reason", "Guardian",
+         "Traveltime", "Failures", "Schoolsup", "Famsup", "Paid", "Activities", "Nursery", "Higher", "Internet",
+         "Romantic", "Goout", "Walc"], axis=1)
 
     # Graph a relation with the age to avg of G1, G2, G3
     # # Convert the data to numeric
     studentDF["Age"] = pd.to_numeric(studentDF["Age"])
     studentDF["Health"] = pd.to_numeric(studentDF["Health"])
-
-
-    # Organize the data "Health" from least to greatest
-    studentDF = studentDF.sort_values(by="Health") # THis does not work
-
-
+    studentDF["Absences"] = pd.to_numeric(studentDF["Absences"])
+    studentDF["Dalc"] = pd.to_numeric(studentDF["Dalc"])
+    studentDF["Freetime"] = pd.to_numeric(studentDF["Freetime"])
+    studentDF["Studytime"] = pd.to_numeric(studentDF["Studytime"])
+    studentDF["Famrel"] = pd.to_numeric(studentDF["Famrel"])
 
     # Make the data frame add the avg of G1, G2, G3
     studentDF["G1"] = studentDF["G1"].astype(float)
@@ -109,12 +145,8 @@ def main():
     studentDF["G3"] = studentDF["G3"].astype(float)
     studentDF["Avg"] = studentDF[["G1", "G2", "G3"]].mean(axis=1)
 
-    # Print the mean of the Health for each number ("1", "2", "3", etc)
-
-    print(studentDF.groupby("Health")["Avg"].mean())
-
     matplotlib.use('Agg')
-    #calculate chi squared test statistics
+    # calculate chi squared test statistics
     # calculating health x^2
     health = chisquaredHealth(studentDF)
     print("health\n")
@@ -145,24 +177,16 @@ def main():
     print("free\n")
     print(free)
 
-    #What are the types of graphs that can be used?
-    # Scatter plot
-    # Bar graph
-    # Pie chart
-    # Histogram
-    # Box plot
-    # Area plot
-    # Scatter plot
+    # Create a graph for each of the columns
+    createGraphs(studentDF, "Age")
+    createGraphs(studentDF, "Health")
+    createGraphs(studentDF, "Absences")
+    createGraphs(studentDF, "Dalc")
+    createGraphs(studentDF, "Freetime")
+    createGraphs(studentDF, "Studytime")
+    createGraphs(studentDF, "Famrel")
 
-    # For each x value, find the mean of the y values and plot it
-    #fig = studentDF.groupby("Health")["Avg"].mean().plot(x="Health", y="Avg", kind="line", title="Health vs Avg").get_figure()
+    print("Done")
 
-
-    #fig = studentDF.plot(x="Health", y="Avg", kind="scatter", title="Health vs Avg").get_figure()
-
-
-    # Save the plot
-    #fig.savefig("healthVSavg-scatter.png")
 
 main()
-
