@@ -44,65 +44,30 @@ def fileToList(data):
 
 
 # create a fucntion that calcualtes the chi squared statistic for each of the outside factors
-def chisquaredHealth(studentDF):
-    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Health'])
+def chisquared(studentDF,x):
+    # finds expected value
+    crosstab = pd.crosstab(studentDF['Avg'], studentDF[x])
+    #Calculates chi squared statistic
     num = stats.chi2_contingency(crosstab)
+    print(x)
+    print(num)
     return num
-
-
-def chisquaredAbsenses(studentDF):
-    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Absences'])
-    num = stats.chi2_contingency(crosstab)
-    return num
-
-
-def chisquaredStudy(studentDF):
-    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Studytime'])
-    num = stats.chi2_contingency(crosstab)
-    return num
-
-
-def chisquaredFamrel(studentDF):
-    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Famrel'])
-    num = stats.chi2_contingency(crosstab)
-    return num
-
-
-def chisquaredAlc(studentDF):
-    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Dalc'])
-    num = stats.chi2_contingency(crosstab)
-    return num
-
-
-def chisquaredFree(studentDF):
-    crosstab = pd.crosstab(studentDF['Avg'], studentDF['Freetime'])
-    num = stats.chi2_contingency(crosstab)
-    return num
-
 
 # Create a function that creates graphs that is passed through the data frame and what you want to graph ex: "Age", "Health", "etc"
 def createGraphs(studentDF, x):
     # Organize the data "x" from least to greatest
     studentDF = studentDF.sort_values(by=x)
-
     x_lower = x.lower()
-
     # Line graph
     fig = studentDF.groupby(x)["Avg"].mean().plot(x=x, y="Avg", kind="line", title=x + " vs Avg").get_figure()
-
     # Save the plot
     fig.savefig(x_lower + "VSavg-line.png")
-
     fig.clf()  # clear the figure
-
     # Scatter plot
     fig = studentDF.plot(x=x, y="Avg", kind="scatter", title=x + " vs Avg").get_figure()
-
     # Save the plot
     fig.savefig(x_lower + "VSavg-scatter.png")
-
     fig.clf()  # clear the figure
-
     print("Created graphs for " + x)
 
     return
@@ -147,35 +112,14 @@ def main():
 
     matplotlib.use('Agg')
     # calculate chi squared test statistics
-    # calculating health x^2
-    health = chisquaredHealth(studentDF)
-    print("health\n")
-    print(health)
+    chisquared(studentDF, "Health")
+    chisquared(studentDF, "Absences")
+    chisquared(studentDF, "Dalc")
+    chisquared(studentDF, "Freetime")
+    chisquared(studentDF, "Studytime")
+    chisquared(studentDF, "Famrel")
 
-    # calculating health x^2
-    absenses = chisquaredAbsenses(studentDF)
-    print("absenses\n")
-    print(absenses)
 
-    # calculating study time x^2
-    study = chisquaredStudy(studentDF)
-    print("study\n")
-    print(study)
-
-    # calculating family relations x^2
-    famrel = chisquaredFamrel(studentDF)
-    print("famrel\n")
-    print(famrel)
-
-    # calculating daily alcohol consumption x^2
-    dalc = chisquaredAlc(studentDF)
-    print("dalc\n")
-    print(dalc)
-
-    # calculating free time x^2
-    free = chisquaredFree(studentDF)
-    print("free\n")
-    print(free)
 
     # Create a graph for each of the columns
     createGraphs(studentDF, "Age")
