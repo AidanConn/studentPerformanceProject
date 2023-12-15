@@ -125,7 +125,7 @@ def main():
 
     # Delete unnecessary columns
     studentDF = studentDF.drop(
-        ["School", "Sex", "Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "Reason", "Guardian",
+        ["Address", "Famsize", "Pstatus", "Medu", "Fedu", "Mjob", "Fjob", "Reason", "Guardian",
          "Traveltime", "Failures", "Schoolsup", "Famsup", "Paid", "Activities", "Nursery", "Higher", "Internet",
          "Romantic", "Goout", "Walc"], axis=1)
 
@@ -145,7 +145,18 @@ def main():
     studentDF["G3"] = studentDF["G3"].astype(float)
     studentDF["Avg"] = studentDF[["G1", "G2", "G3"]].mean(axis=1)
 
+    # Get number of occurrences of each age
+    print(studentDF["Age"].value_counts())
+
+    # Get number of occurrences of each sex
+    print(studentDF["Sex"].value_counts())
+
+    # Get number of occurrences of each school
+    print(studentDF["School"].value_counts())
+
+    # Matplotlib
     matplotlib.use('Agg')
+
     # calculate chi squared test statistics
     # calculating health x^2
     health = chisquaredHealth(studentDF)
